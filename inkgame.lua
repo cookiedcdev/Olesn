@@ -58,6 +58,19 @@ function Maid:Clean()
     self.Tasks = {}
 end
 
+local Services = setmetatable({}, {
+	__index = function(self, key)
+		local suc, service = pcall(game.GetService, game, key)
+		if suc and service then
+			self[key] = service
+			return service
+		else
+			warn(`[Services] Warning: "{key}" is not a valid Roblox service.`)
+			return nil
+		end
+	end
+})
+
 local Players = Services.Players
 local Lighting = Services.Lighting
 local RunService = Services.RunService
