@@ -6,6 +6,10 @@ local title = lib:SetTitle("99 Nights In The Forest")
 
 local Ppage = lib:AddPage("Player")
 
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local player = Players.LocalPlayer
+
 local Toggle = Ppage:AddToggle("Infinite Jump", "Makes your character jump indefinitely.", false)
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
