@@ -1,6 +1,6 @@
 local lib, env, c = ...
 
-local InfJump = false
+local NoF = false
 
 local title = lib:SetTitle("99 Nights In The Forest")
 
@@ -10,27 +10,27 @@ local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 
-local Toggle = Ppage:AddToggle("Infinite Jump", "Makes your character jump indefinitely.", false)
+local NoFog = Ppage:AddToggle("No Fog", "Turns off fog.")
 
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-
-    if InfJump and input.UserInputType == Enum.UserInputType.Touch then
-        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            task.wait()
-            humanoid:ChangeState(Enum.HumanoidStateType.Seated)
+NoFog.OnToggle:Connect(function()
+    NoF = Value
+    while NoF do
+        for _, part in pairs(Workspace.Map.Boundaries:GetChildren()) do
+            if part:isA("Part") then
+                part:Destroy()
+            end
         end
+        wait(0.1)
     end
 end)
 
-Toggle.OnToggle:Connect(function(status)
-    print(status)
+local TPC = Ppage:AddButton("Teleport To Campfire", "Teleports you directly to the campfire.")
 
-    InfJump = status
+TPC.OnClick:Connect(function()
+    game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Workspace.Map.Campground.MainFire.PrimaryPart.CFrame
 end)
-local page2 = lib:AddPage("Page 2")
+
+local page2 = lib:AddPage("Bring Item")
 
 local button = page2:AddButton("Reset walkspeed", "Resets walkspeed", "Reset")
 
