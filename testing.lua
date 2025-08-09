@@ -13,8 +13,11 @@ Toggle.OnToggle:Connect(function(status)
 
     InfJump = status
     while InfJump do
-        local plr = game:GetService('Players').LocalPlayer
-        local m = plr:GetMouse()
+        local Players = game:GetService("Players")
+        local UserInputService = game:GetService("UserInputService")
+
+        local player = Players.LocalPlayer
+
         if InfJump and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Space then -- PC JUMP
             local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
             if humanoid then
