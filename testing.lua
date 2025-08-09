@@ -15,16 +15,17 @@ Toggle.OnToggle:Connect(function(status)
     while InfJump do
         local plr = game:GetService('Players').LocalPlayer
         local m = plr:GetMouse()
-        m.KeyDown:connect(function(k)
-            if InfJump then
-                if k:byte() == 32 then
-                    humanoid = game:GetService 'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-                    humanoid:ChangeState('Jumping')
-                    wait()
-                    humanoid:ChangeState('Seated')
-                end
+        if InfJump and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Space then -- PC JUMP
+            local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
             end
-        end)
+        elseif InfJump and input.UserInputType == Enum.UserInputType.Touch then -- MOBILE JUMP
+            local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
+        end
         wait(0.1)
     end
 end)
