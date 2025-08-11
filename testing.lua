@@ -107,6 +107,7 @@ local AEtype = AFpage:AddComboBox("Auto Eat Food Type", "Choose the type of auto
 AEtype.OnChanged:Connect(function(v) 
     type = v
 end)
+
 task.spawn(function()
     local hn = AFpage:AddTextBox("Hunger:", gethunger())
     local chosenfood = AFpage:AddTextBox("Chosen Food:", chosen)
@@ -116,6 +117,43 @@ task.spawn(function()
         chosenfood.Description = chosen
     end
 end)
+local ae = false
+local percent = 75
+if type == "Hunger %" then
+    local AEpercent = AFpage:AddNumericUpDown("Auto Eat Food Hunger %", "Choose what % to eat the food at.", 75, 1, 100, 1)
+    AEpercent.OnChanged:Connect(function(v) 
+        percent = tonumber(v) or 75
+    end)
+end
+local AEtoggle = AFpage:AddToggle("Auto Eat Food", "Automatically eat the chosen food with the chosen type", false)
+local function eat(name)
+    for _, item in ipairs(workspace.Items:GetChildren()) do
+        if item.Name == name then
+            game:GetService("ReplicatedStorage").RemoteEvents.RequestConsumeItem:InvokeServer(item)
+            break
+        end
+    end
+end
 
+AEtoggle.OnToggle:Connect(function(value)
+    ae = value
+    task.spawn(function()
+        while ae do
+            if type == "Hunger %" then
+                if gethunger() <= percent then
+                    eat(chosen)
+                end
+            else
+                eat(chosen)
+                task.wait(3)
+            end
+
+            if type == "Hunger %" then
+                task.wait(0.1)
+            end
+        end
+    end)
+    
+end)
 
 lib:SetEnabled(true)
