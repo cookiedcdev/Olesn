@@ -1,10 +1,18 @@
 local lib, env, c = ...
 
-local NoF, KillA = false, false
+local NoF, KillA, SafeZone = false, false, false
 
 local title = lib:SetTitle("99 Nights In The Forest")
 
+local Mpage = lib:AddPage("Main")
+local AFpage = lib:AddPage("Auto Farm")
 local Ppage = lib:AddPage("Player")
+local Gpage = lib:AddPage("Game")
+
+-- Main
+
+local ShowSZ = Mpage:AddToggle("Show Safe Zone", "Shows you the safe zone.", false)
+
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -30,10 +38,13 @@ TPC.OnClick:Connect(function()
     game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Workspace.Map.Campground.MainFire.PrimaryPart.CFrame
 end)
 
-local Gpage = lib:AddPage("Game")
-
-local KillAura = Gpage:AddToggle("Kill Aura", "Activates kill aura for enemies", false)
+local KillAura = Mpage:AddToggle("Kill Aura", "Activates kill aura for enemies", false)
+local SliderDistance = Mpage:AddSlider("Distance For Kill Aura", "Distance for the kill aura to activate", 25, 25, 10000)
 local DistanceForKillAura = 25
+SliderDistance.ValueUpdate:Connect(function(num)
+    DistanceForKillAura = num
+    print(num)
+end)
 KillAura.OnToggle:Connect(function(value)
     KillA = value
     while KillA do
