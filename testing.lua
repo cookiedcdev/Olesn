@@ -47,28 +47,31 @@ SliderDistance.ValueUpdated:Connect(function(num)
 end)
 KillAura.OnToggle:Connect(function(value)
     KillA = value
-    while KillA do
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local hrp = character:WaitForChild("HumanoidRootPart")
-        local weapon = (player.Inventory:FindFirstChild("Old Axe") or
-                            player.Inventory:FindFirstChild("Good Axe") or
-                            player.Inventory:FindFirstChild("Strong Axe") or
-                            player.Inventory:FindFirstChild("Chainsaw"))
-        task.spawn(function()
-            for _, bunny in pairs(workspace.Characters:GetChildren()) do
-                if bunny:IsA("Model") and bunny.PrimaryPart then
-                    local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
-                    if distance <= DistanceForKillAura then
-                        local result =
-                            game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(
-                                bunny, weapon, 999, hrp.CFrame)
+    task.spawn(function()
+        while KillA do
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local hrp = character:WaitForChild("HumanoidRootPart")
+            local weapon = (player.Inventory:FindFirstChild("Old Axe") or
+                                player.Inventory:FindFirstChild("Good Axe") or
+                                player.Inventory:FindFirstChild("Strong Axe") or
+                                player.Inventory:FindFirstChild("Chainsaw"))
+            task.spawn(function()
+                for _, bunny in pairs(workspace.Characters:GetChildren()) do
+                    if bunny:IsA("Model") and bunny.PrimaryPart then
+                        local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
+                        if distance <= DistanceForKillAura then
+                            local result =
+                                game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(
+                                    bunny, weapon, 999, hrp.CFrame)
+                        end
                     end
                 end
-            end
-        end)
-        wait(0.1)
-    end
+            end)
+            wait(0.1)
+        end
+    end)
+    
 end)
 local page2 = lib:AddPage("Bring Item")
 
