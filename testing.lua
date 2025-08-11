@@ -41,7 +41,7 @@ end)
 local KillAura = Mpage:AddToggle("Kill Aura", "Activates kill aura for enemies", false)
 local SliderDistance = Mpage:AddSlider("Distance For Kill Aura", "Distance for the kill aura to activate", 25, 25, 10000)
 local DistanceForKillAura = 25
-SliderDistance.ValueUpdate:Connect(function(num)
+SliderDistance.ValueUpdated:Connect(function(num)
     DistanceForKillAura = num
     print(num)
 end)
