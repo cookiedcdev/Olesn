@@ -121,7 +121,7 @@ local ae = false
 local percent = 75
 if type == "Hunger %" then
     local AEpercent = AFpage:AddNumericUpDown("Auto Eat Food Hunger %", "Choose what % to eat the food at.", 75, 1, 100, 1)
-    AEpercent.OnChanged:Connect(function(v) 
+    AEpercent.NumberChanged:Connect(function(v) 
         percent = tonumber(v) or 75
     end)
 end
